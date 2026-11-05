@@ -13,7 +13,7 @@
 > This is a precaution based on one tester's observation, not a fully diagnosed cause.
 
 This is an unofficial community patch set on top of
-[b00t0x/WhateverXe](https://example.com/REPLACE-upstream-whateverxe) 0.6.1 (commit `68a2427`).
+[b00t0x/WhateverXe](https://github.com/b00t0x/WhateverXe) 0.6.1 (commit `68a2427`).
 It is **not affiliated with or endorsed by the upstream author**. All driver work is upstream's;
 this repository only adjusts two checks so a laptop with a 6-bit internal eDP panel can start the native
 graphics driver on 12th/13th-gen Xe-LP (Display 13) laptop iGPUs. It has been verified on one Alder Lake-U machine only. Discussion: [Reddit thread](https://example.com/REPLACE-reddit-thread).
@@ -105,10 +105,10 @@ All items are required unless marked optional. **This repository does not contai
 |---|---|---|---|
 | **WhateverXe.kext (this fork)** | 0.6.1 + patches | The Lilu plugin with the two fixes | [This fork's release](https://example.com/REPLACE-this-fork-release) |
 | **AMFIPass (Mod)** | v1.4.1 Mod | Lets macOS load the signed graphics bundles installed on the Data volume (upstream's Mod build, not the stock one) | [AMFIPass v1.4.1 Mod](https://github.com/b00t0x/WhateverXe-Graphics/raw/refs/heads/main/extras/AMFIPass-v1.4.1-Mod-RELEASE.zip) |
-| **WhateverXe Graphics package** | 0.3.2 | Installs Apple's Tiger Lake driver payloads and shader fixes on macOS (upstream's installer) | [WhateverXe Graphics package]((https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.3.2)) |
-| **Lilu** | 1.7.3 | Required by WhateverXe | [Lilu]((https://github.com/dortania/build-repo/releases/tag/Lilu-0249c3a)) |
+| **WhateverXe Graphics package** | 0.3.2 | Installs Apple's Tiger Lake driver payloads and shader fixes on macOS (upstream's installer) | [WhateverXe Graphics package](https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.3.2) |
+| **Lilu** | 1.7.3 | Required by WhateverXe | [Lilu](https://github.com/dortania/build-repo/releases/tag/Lilu-0249c3a) |
 | **AppleIntelTGLCompat** | 0.6.1 | Upstream's compatibility provider, unchanged. Use the copy that matches upstream 0.6.1 | [Upstream release](https://example.com/REPLACE-upstream-release) |
-| **OpenCore** | 1.0.9 | Bootloader | [OpenCorePkg]((https://github.com/dortania/build-repo/releases/tag/OpenCorePkg-dd5dc22)) |
+| **OpenCore** | 1.0.9 | Bootloader | [OpenCorePkg](https://github.com/dortania/build-repo/releases/tag/OpenCorePkg-dd5dc22) |
 | **SSDTTime** | latest | Generates `SSDT-PNLF` for brightness | [SSDTTime]((https://github.com/corpnewt/ssdttime)) |
 | `SSDT-PNLF` example (optional) | — | A sample for reference only; generate your own for your DSDT | [Sample SSDT-PNLF](https://example.com/REPLACE-sample-ssdt-pnlf) |
 | BrightnessKeys (optional) | latest | Fn-key brightness hotkeys | [BrightnessKeys](https://github.com/acidanthera/BrightnessKeys/releases) |
@@ -215,7 +215,7 @@ Notes: the name "Intel(R) TGL Unknown" and 1536 MB VRAM are values reported by A
 | Boots but screen is black / hangs | Wrong DVMT properties for your firmware value, or an untested panel/GPU | Boot your backup EFI; check `fw-dvmt-gms-field-value`; try verbose boot and post the last screen |
 | Metal 2 shown but brightness slider does nothing | `PNLF` missing, duplicated, or `_UID` is not 19 | Redo step 4, then `ioreg -n PNLF -r -l` |
 | Brightness hotkeys do nothing but the slider works | Hotkeys not mapped | Add [BrightnessKeys ((https://github.com/acidanthera/BrightnessKeys/releases)) |
-| Graphics packages missing after a macOS update | Update replaced the installed bundles | Reinstall the latest [Graphics package]((https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.3.2)) |
+| Graphics packages missing after a macOS update | Update replaced the installed bundles | Reinstall the [Graphics package](https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.3.2) |
 | More video-playback errors after a macOS/Safari update | Updating Safari along with macOS updates (tester's report) | Avoid such updates; if already updated, re-test video and report your macOS and Safari versions |
 | Streaming video stalls when seeking, local files are smooth | Likely network/Wi-Fi on the tested machine (not confirmed) | Test another connection; some Realtek Wi-Fi setups benefit from disabling ASPM on that device |
 
