@@ -302,7 +302,7 @@ Please include:
 
 ## Credits and license
 
-- All graphics driver work: **b00t0x** and contributors of [WhateverXe](https://github.com/b00t0x/WhateverXe) and the [WhateverXe Graphics package](https://github.com/b00t0x/WhateverXe-Graphics).
+- All graphics driver work: [**b00t0x**](https://github.com/b00t0x) and contributors of [WhateverXe](https://github.com/b00t0x/WhateverXe) and the [WhateverXe Graphics package](https://github.com/b00t0x/WhateverXe-Graphics).
 - Lilu, OpenCore, MacKernelSDK, BrightnessKeys: the [Acidanthera](https://github.com/acidanthera) projects. SSDTTime: CorpNewt.
 - Licensed under **BSD-3-Clause**, unchanged from upstream; see `LICENSE.txt`. Upstream copyright notices are retained.
 - This project does not include or redistribute Apple driver files. Use at your own risk; no warranty.
