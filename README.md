@@ -296,7 +296,7 @@ Please include:
 
 | Where | Link |
 |---|---|
-| Reddit (direct message) | [u/YOUR-USERNAME](https://www.reddit.com/user/Belugaa_01/) |
+| Reddit (direct message) | [u/Belugaa_01](https://www.reddit.com/user/Belugaa_01/) |
 | Reddit discussion thread | [r/hackintosh thread](https://example.com/REPLACE-reddit-thread) |
 
 **Privacy:** do not post your serial number, MLB, ROM, SystemUUID or iMessage keys. Blur them in screenshots.
