@@ -149,7 +149,7 @@ The plugin's brightness profile only applies when the ACPI device `PNLF` has **`
    Find `504E4C46` (`PNLF`) → Replace `584E4C46` (`XNLF`). Keep the comment clear, e.g. `PNLF to XNLF`.
 4. After booting, confirm with `ioreg -n PNLF -r -l` that `_UID` is `"19"` (see [Verify it works](#verify-it-works)).
 5. It should look like this if you're using Propertree - 
-<img width="623" height="227" alt="image" src="https://github.com/user-attachments/assets/7a660462-5beb-4aba-b945-43e0738f9cc5" />
+   <img width="623" height="227" alt="image" src="https://github.com/user-attachments/assets/7a660462-5beb-4aba-b945-43e0738f9cc5" />
 
 
 ### 5. Edit `config.plist`
