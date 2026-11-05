@@ -16,7 +16,7 @@ This is an unofficial community patch set on top of
 [b00t0x/WhateverXe](https://github.com/b00t0x/WhateverXe) 0.6.1 (commit `68a2427`).
 It is **not affiliated with or endorsed by the upstream author**. All driver work is upstream's;
 this repository only adjusts two checks so a laptop with a 6-bit internal eDP panel can start the native
-graphics driver on 12th/13th-gen Xe-LP (Display 13) laptop iGPUs. It has been verified on one Alder Lake-U machine only. Discussion: [Reddit thread](https://example.com/REPLACE-reddit-thread).
+graphics driver on 12th/13th-gen Xe-LP (Display 13) laptop iGPUs. It has been verified on one Alder Lake-U machine only. Discussion: [Reddit thread](https://www.reddit.com/r/hackintosh/s/AMW8XHMaXC).
 
 ---
 
@@ -297,7 +297,7 @@ Please include:
 | Where | Link |
 |---|---|
 | Reddit (direct message) | [u/Belugaa_01](https://www.reddit.com/user/Belugaa_01/) |
-| Reddit discussion thread | [r/hackintosh thread](https://example.com/REPLACE-reddit-thread) |
+| Reddit discussion thread | [r/hackintosh thread](https://www.reddit.com/r/hackintosh/s/AMW8XHMaXC) |
 
 **Privacy:** do not post your serial number, MLB, ROM, SystemUUID or iMessage keys. Blur them in screenshots.
 
