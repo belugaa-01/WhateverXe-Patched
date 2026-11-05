@@ -103,14 +103,14 @@ All items are required unless marked optional. **This repository does not contai
 
 | Component | Version tested | Purpose | Download |
 |---|---|---|---|
-| **WhateverXe.kext (this fork)** | 0.6.1 + patches | The Lilu plugin with the two fixes | [This fork's release](https://example.com/REPLACE-this-fork-release) |
+| **WhateverXe.kext (this fork)** | 0.6.1 + patches | The Lilu plugin with the two fixes | [This fork's release](https://github.com/belugaa-01/WhateverXe-Patched/releases) |
 | **AMFIPass (Mod)** | v1.4.1 Mod | Lets macOS load the signed graphics bundles installed on the Data volume (upstream's Mod build, not the stock one) | [AMFIPass v1.4.1 Mod](https://github.com/b00t0x/WhateverXe-Graphics/raw/refs/heads/main/extras/AMFIPass-v1.4.1-Mod-RELEASE.zip) |
 | **WhateverXe Graphics package** | 0.3.2 | Installs Apple's Tiger Lake driver payloads and shader fixes on macOS (upstream's installer) | [WhateverXe Graphics package](https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.3.2) |
 | **Lilu** | 1.7.3 | Required by WhateverXe | [Lilu](https://github.com/dortania/build-repo/releases/tag/Lilu-0249c3a) |
 | **AppleIntelTGLCompat** | 0.6.1 | Upstream's compatibility provider, unchanged. Use the copy that matches upstream 0.6.1 | [Upstream release](https://example.com/REPLACE-upstream-release) |
 | **OpenCore** | 1.0.9 | Bootloader | [OpenCorePkg](https://github.com/dortania/build-repo/releases/tag/OpenCorePkg-dd5dc22) |
 | **SSDTTime** | latest | Generates `SSDT-PNLF` for brightness | [SSDTTime](https://github.com/corpnewt/ssdttime) |
-| `SSDT-PNLF` example (optional) | — | A sample for reference only; generate your own for your DSDT | [Sample SSDT-PNLF](https://example.com/REPLACE-sample-ssdt-pnlf) |
+| `SSDT-PNLF` example (optional) | — | A sample for reference only; generate your own for your DSDT | [Sample SSDT-PNLF](https://github.com/belugaa-01/WhateverXe-Patched/blob/main/SSDT-PNLF.aml) |
 | BrightnessKeys (optional) | latest | Fn-key brightness hotkeys | [BrightnessKeys](https://github.com/acidanthera/BrightnessKeys/releases) |
 | Hackintool (optional) | latest | Checking GPU / PCIe info | [Hackintool](https://github.com/benbaker76/Hackintool/releases) |
 
@@ -293,7 +293,7 @@ Please include:
 
 | Where | Link |
 |---|---|
-| Reddit (direct message) | [u/YOUR-USERNAME](https://example.com/REPLACE-reddit-profile) |
+| Reddit (direct message) | [u/YOUR-USERNAME](https://www.reddit.com/user/Belugaa_01/) |
 | Reddit discussion thread | [r/hackintosh thread](https://example.com/REPLACE-reddit-thread) |
 
 **Privacy:** do not post your serial number, MLB, ROM, SystemUUID or iMessage keys. Blur them in screenshots.
