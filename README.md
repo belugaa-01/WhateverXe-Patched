@@ -104,15 +104,15 @@ All items are required unless marked optional. **This repository does not contai
 | Component | Version tested | Purpose | Download |
 |---|---|---|---|
 | **WhateverXe.kext (this fork)** | 0.6.1 + patches | The Lilu plugin with the two fixes | [This fork's release](https://example.com/REPLACE-this-fork-release) |
-| **AMFIPass (Mod)** | v1.4.1 Mod | Lets macOS load the signed graphics bundles installed on the Data volume (upstream's Mod build, not the stock one) | [AMFIPass v1.4.1 Mod](https://example.com/REPLACE-amfipass-mod) |
-| **WhateverXe Graphics package** | 0.3.2 | Installs Apple's Tiger Lake driver payloads and shader fixes on macOS (upstream's installer) | [WhateverXe Graphics package](https://example.com/REPLACE-whateverxe-graphics-pkg) |
-| **Lilu** | 1.7.3 | Required by WhateverXe | [Lilu](https://example.com/REPLACE-lilu) |
+| **AMFIPass (Mod)** | v1.4.1 Mod | Lets macOS load the signed graphics bundles installed on the Data volume (upstream's Mod build, not the stock one) | [AMFIPass v1.4.1 Mod](https://github.com/b00t0x/WhateverXe-Graphics/raw/refs/heads/main/extras/AMFIPass-v1.4.1-Mod-RELEASE.zip) |
+| **WhateverXe Graphics package** | 0.3.2 | Installs Apple's Tiger Lake driver payloads and shader fixes on macOS (upstream's installer) | [WhateverXe Graphics package]((https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.3.2)) |
+| **Lilu** | 1.7.3 | Required by WhateverXe | [Lilu]((https://github.com/dortania/build-repo/releases/tag/Lilu-0249c3a)) |
 | **AppleIntelTGLCompat** | 0.6.1 | Upstream's compatibility provider, unchanged. Use the copy that matches upstream 0.6.1 | [Upstream release](https://example.com/REPLACE-upstream-release) |
-| **OpenCore** | 1.0.9 | Bootloader | [OpenCorePkg](https://example.com/REPLACE-opencore) |
-| **SSDTTime** | latest | Generates `SSDT-PNLF` for brightness | [SSDTTime](https://example.com/REPLACE-ssdttime) |
+| **OpenCore** | 1.0.9 | Bootloader | [OpenCorePkg]((https://github.com/dortania/build-repo/releases/tag/OpenCorePkg-dd5dc22)) |
+| **SSDTTime** | latest | Generates `SSDT-PNLF` for brightness | [SSDTTime]((https://github.com/corpnewt/ssdttime)) |
 | `SSDT-PNLF` example (optional) | — | A sample for reference only; generate your own for your DSDT | [Sample SSDT-PNLF](https://example.com/REPLACE-sample-ssdt-pnlf) |
-| BrightnessKeys (optional) | latest | Fn-key brightness hotkeys | [BrightnessKeys](https://example.com/REPLACE-brightnesskeys) |
-| Hackintool (optional) | latest | Checking GPU / PCIe info | [Hackintool](https://example.com/REPLACE-hackintool) |
+| BrightnessKeys (optional) | latest | Fn-key brightness hotkeys | [BrightnessKeys](https://github.com/acidanthera/BrightnessKeys/releases) |
+| Hackintool (optional) | latest | Checking GPU / PCIe info | [Hackintool](https://github.com/benbaker76/Hackintool/releases) |
 
 **Do not load WhateverGreen** with this plugin.
 
@@ -143,7 +143,7 @@ Remove or disable `WhateverGreen.kext` if present.
 ### 4. Create the brightness SSDT (laptops with a built-in panel)
 The plugin's brightness profile only applies when the ACPI device `PNLF` has **`_UID` = `19`**.
 
-1. Dump your DSDT and run [SSDTTime](https://example.com/REPLACE-ssdttime), choose the **PNLF** option and generate `SSDT-PNLF.aml`.
+1. Dump your DSDT and run [SSDTTime](https://github.com/corpnewt/ssdttime), choose the **PNLF** option and generate `SSDT-PNLF.aml`.
 2. Put `SSDT-PNLF.aml` in `EFI/OC/ACPI/` and add it to `ACPI > Add`.
 3. **If your DSDT already defines a `PNLF` device**, also add an `ACPI > Patch` rename so the two do not collide:  
    Find `504E4C46` (`PNLF`) → Replace `584E4C46` (`XNLF`). Keep the comment clear, e.g. `PNLF to XNLF`.
@@ -181,7 +181,7 @@ Do **not** add a `device-id` spoof. The plugin selects its backend from the real
 
 ### 6. First boot and install the Graphics package
 1. Boot macOS. The first boot uses the firmware framebuffer (low VRAM, no Metal) until the package is installed.
-2. Run the [WhateverXe Graphics package](https://example.com/REPLACE-whateverxe-graphics-pkg) installer (use the latest release).
+2. Run the [WhateverXe Graphics package](https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.3.2) installer.
 3. Reboot.
 
 If acceleration disappears after a macOS update, reinstall the latest package.
@@ -214,8 +214,8 @@ Notes: the name "Intel(R) TGL Unknown" and 1536 MB VRAM are values reported by A
 | `N97NativeStartAllowed = No` with this fork | Missing prerequisites | `DisableIoMapper`, boot-args, the two DVMT properties, Lilu → AMFIPass → WhateverXe order, WhateverGreen removed |
 | Boots but screen is black / hangs | Wrong DVMT properties for your firmware value, or an untested panel/GPU | Boot your backup EFI; check `fw-dvmt-gms-field-value`; try verbose boot and post the last screen |
 | Metal 2 shown but brightness slider does nothing | `PNLF` missing, duplicated, or `_UID` is not 19 | Redo step 4, then `ioreg -n PNLF -r -l` |
-| Brightness hotkeys do nothing but the slider works | Hotkeys not mapped | Add [BrightnessKeys](https://example.com/REPLACE-brightnesskeys) |
-| Graphics packages missing after a macOS update | Update replaced the installed bundles | Reinstall the latest [Graphics package](https://example.com/REPLACE-whateverxe-graphics-pkg) |
+| Brightness hotkeys do nothing but the slider works | Hotkeys not mapped | Add [BrightnessKeys ((https://github.com/acidanthera/BrightnessKeys/releases)) |
+| Graphics packages missing after a macOS update | Update replaced the installed bundles | Reinstall the latest [Graphics package]((https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.3.2)) |
 | More video-playback errors after a macOS/Safari update | Updating Safari along with macOS updates (tester's report) | Avoid such updates; if already updated, re-test video and report your macOS and Safari versions |
 | Streaming video stalls when seeking, local files are smooth | Likely network/Wi-Fi on the tested machine (not confirmed) | Test another connection; some Realtek Wi-Fi setups benefit from disabling ASPM on that device |
 
