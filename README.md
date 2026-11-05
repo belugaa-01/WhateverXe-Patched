@@ -214,7 +214,7 @@ Notes: the name "Intel(R) TGL Unknown" and 1536 MB VRAM are values reported by A
 | `N97NativeStartAllowed = No` with this fork | Missing prerequisites | `DisableIoMapper`, boot-args, the two DVMT properties, Lilu → AMFIPass → WhateverXe order, WhateverGreen removed |
 | Boots but screen is black / hangs | Wrong DVMT properties for your firmware value, or an untested panel/GPU | Boot your backup EFI; check `fw-dvmt-gms-field-value`; try verbose boot and post the last screen |
 | Metal 2 shown but brightness slider does nothing | `PNLF` missing, duplicated, or `_UID` is not 19 | Redo step 4, then `ioreg -n PNLF -r -l` |
-| Brightness hotkeys do nothing but the slider works | Hotkeys not mapped | Add [BrightnessKeys ((https://github.com/acidanthera/BrightnessKeys/releases)) |
+| Brightness hotkeys do nothing but the slider works | Hotkeys not mapped | Add [BrightnessKeys](https://github.com/acidanthera/BrightnessKeys/releases) |
 | Graphics packages missing after a macOS update | Update replaced the installed bundles | Reinstall the [Graphics package](https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.3.2) |
 | More video-playback errors after a macOS/Safari update | Updating Safari along with macOS updates (tester's report) | Avoid such updates; if already updated, re-test video and report your macOS and Safari versions |
 | Streaming video stalls when seeking, local files are smooth | Likely network/Wi-Fi on the tested machine (not confirmed) | Test another connection; some Realtek Wi-Fi setups benefit from disabling ASPM on that device |
@@ -302,7 +302,7 @@ Please include:
 
 ## Credits and license
 
-- All graphics driver work: **b00t0x** and contributors of [WhateverXe](https://example.com/REPLACE-upstream-whateverxe) and the [WhateverXe Graphics package](https://example.com/REPLACE-whateverxe-graphics-pkg).
-- Lilu, OpenCore, MacKernelSDK, BrightnessKeys: the [Acidanthera](https://example.com/REPLACE-acidanthera) projects. SSDTTime: CorpNewt.
+- All graphics driver work: **b00t0x** and contributors of [WhateverXe](https://github.com/b00t0x/WhateverXe) and the [WhateverXe Graphics package](https://github.com/b00t0x/WhateverXe-Graphics).
+- Lilu, OpenCore, MacKernelSDK, BrightnessKeys: the [Acidanthera](https://github.com/acidanthera) projects. SSDTTime: CorpNewt.
 - Licensed under **BSD-3-Clause**, unchanged from upstream; see `LICENSE.txt`. Upstream copyright notices are retained.
 - This project does not include or redistribute Apple driver files. Use at your own risk; no warranty.
