@@ -109,7 +109,7 @@ All items are required unless marked optional. **This repository does not contai
 | **Lilu** | 1.7.3 | Required by WhateverXe | [Lilu](https://github.com/dortania/build-repo/releases/tag/Lilu-0249c3a) |
 | **AppleIntelTGLCompat** | 0.6.1 | Upstream's compatibility provider, unchanged. Use the copy that matches upstream 0.6.1 | [Upstream release](https://example.com/REPLACE-upstream-release) |
 | **OpenCore** | 1.0.9 | Bootloader | [OpenCorePkg](https://github.com/dortania/build-repo/releases/tag/OpenCorePkg-dd5dc22) |
-| **SSDTTime** | latest | Generates `SSDT-PNLF` for brightness | [SSDTTime]((https://github.com/corpnewt/ssdttime)) |
+| **SSDTTime** | latest | Generates `SSDT-PNLF` for brightness | [SSDTTime](https://github.com/corpnewt/ssdttime) |
 | `SSDT-PNLF` example (optional) | — | A sample for reference only; generate your own for your DSDT | [Sample SSDT-PNLF](https://example.com/REPLACE-sample-ssdt-pnlf) |
 | BrightnessKeys (optional) | latest | Fn-key brightness hotkeys | [BrightnessKeys](https://github.com/acidanthera/BrightnessKeys/releases) |
 | Hackintool (optional) | latest | Checking GPU / PCIe info | [Hackintool](https://github.com/benbaker76/Hackintool/releases) |
