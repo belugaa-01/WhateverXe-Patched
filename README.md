@@ -303,6 +303,18 @@ Please include:
 
 ---
 
+## Acknowledgements
+
+Development & Maintenance: belugaa-01
+
+AI Development Assistance: Anthropic Claude
+
+Claude was used extensively throughout development for code generation, debugging, technical research, and implementation assistance.
+
+All final implementation decisions, integration, testing, and project maintenance are handled by the project maintainer.
+
+---
+
 ## Credits and license
 
 - All graphics driver work: **b00t0x** and contributors of [WhateverXe](https://github.com/b00t0x/WhateverXe) and the [WhateverXe Graphics package](https://github.com/b00t0x/WhateverXe-Graphics).
