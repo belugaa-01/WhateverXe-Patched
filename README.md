@@ -122,8 +122,8 @@ All items are required unless marked optional. **This repository does not contai
 
 | Release | Upstream WhateverXe | WhateverXe Graphics package | Status |
 |---|---|---|---|
-| [v0.2.0-experimental](https://example.com/REPLACE-v020-release) | **0.8.0** | **0.4.1** | Tested on one machine |
-| [v0.1.0-experimental](https://github.com/belugaa-01/WhateverXe-Patched/releases/tag/v0.1.0-Initial) | 0.6.1 | 0.3.2 | Tested on one machine |
+| [v0.2.0](https://example.com/REPLACE-v020-release) | **0.8.0** | **0.4.1** | Tested on one machine |
+| [v0.1.0-intial](https://github.com/belugaa-01/WhateverXe-Patched/releases/tag/v0.1.0-Initial) | 0.6.1 | 0.3.2 | Tested on one machine |
 
 Use the Graphics package version listed for the release you install. Each upstream version has its own patch in `patches/<upstream version>/`.
 
