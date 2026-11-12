@@ -216,7 +216,9 @@ bash scripts/check_wex_setup.sh
 ```
 
 - A working setup should look this - 
-  <img width="948" height="637" alt="image_2026-11-10_10-13-07" src="https://github.com/user-attachments/assets/198295e9-d893-4fad-9789-c2c16feb6a9a" />
+
+  <img width="948" height="572" alt="image_2026-11-10_10-13-07" src="https://github.com/user-attachments/assets/a6fae741-7458-4b99-b43c-a886f42b0567" />
+
 
 
 If the native start is blocked, the plugin (v0.2.0+) records the reason in `N97NativeBlockReason` on the GPU:
