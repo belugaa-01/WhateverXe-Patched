@@ -195,7 +195,7 @@ Do **not** add a `device-id` spoof. The plugin selects its backend from the real
 
 ### 6. First boot and install the Graphics package
 1. Boot macOS. The first boot uses the firmware framebuffer (low VRAM, no Metal) until the package is installed.
-2. Run the [WhateverXe Graphics package](https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.3.2) installer.
+2. Run the [WhateverXe Graphics package](https://github.com/b00t0x/WhateverXe-Graphics/releases/) installer.
 3. Reboot.
 
 If acceleration disappears after a macOS update, reinstall the latest package.
