@@ -118,6 +118,17 @@ All items are required unless marked optional. **This repository does not contai
 
 ---
 
+### Which release for which upstream version
+
+| Release | Upstream WhateverXe | WhateverXe Graphics package | Status |
+|---|---|---|---|
+| [v0.2.0-experimental](https://example.com/REPLACE-v020-release) | **0.8.0** | **0.4.2** | Tested on one machine |
+| [v0.1.0-experimental](https://github.com/belugaa-01/WhateverXe-Patched/releases/tag/v0.1.0-Initial) | 0.6.1 | 0.3.2 | Tested on one machine |
+
+Use the Graphics package version listed for the release you install. Each upstream version has its own patch in `patches/<upstream version>/`.
+
+---
+
 ## Step-by-step setup
 
 Follow the steps in order. Do not skip step 1.
@@ -198,6 +209,29 @@ Continue with [Verify it works](#verify-it-works).
 
 Run these in Terminal after the reboot in step 6.
 
+Run the read-only checker first. It prints OK / WARN / FAIL lines with hints and decodes the block reason below:
+
+```bash
+bash scripts/check_wex_setup.sh
+```
+
+If the native start is blocked, the plugin (v0.2.0+) records the reason in `N97NativeBlockReason` on the GPU:
+`ioreg -l -w0 -n IGPU | grep N97NativeBlockReason`. The checker decodes it. Mask bits:
+
+| Bit | Meaning | Usual fix |
+|---|---|---|
+| 0 | GPU memory aperture (BAR2) not found | Check Above-4G / BAR settings |
+| 1 | Aperture is not 256 MB | Resizable BAR may change the size; the plugin requires 256 MB |
+| 2 | System page size is not 4096 | Unexpected; report it |
+| 3 | **IOMapper active** | Turn VT-d off or set `DisableIoMapper = true` |
+| 4 | PCI memory-space / bus-master not both enabled | Report your firmware version |
+| 5 | `-allow3d` missing | Add to boot-args |
+| 6 | `-disablegfxfirmware` missing | Add to boot-args |
+| 7, 8 | Experimental `-wex-adln-scanout` / `-wex-adln-gpu` set | Remove them |
+| 16 | **Boot display (panel) state not accepted** | Share your report; the panel may need a new rule |
+| 17 | GPU topology / eDRAM check failed | Share your report |
+
+
 | Check | Command | Expected |
 |---|---|---|
 | Kexts loaded | `kmutil showloaded \| grep -iE "WhateverXe\|TGL\|Lilu"` | Lilu, `WhateverXe` 0.6.1, `AppleIntelTGLCompat`, `AppleIntelTGLGraphicsFramebuffer`, and the accelerator kext |
@@ -221,6 +255,9 @@ Notes: the name "Intel(R) TGL Unknown" and 1536 MB VRAM are values reported by A
 | Graphics packages missing after a macOS update | Update replaced the installed bundles | Reinstall the [Graphics package](https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.3.2) |
 | More video-playback errors after a macOS/Safari update | Updating Safari along with macOS updates (tester's report) | Avoid such updates; if already updated, re-test video and report your macOS and Safari versions |
 | Streaming video stalls when seeking, local files are smooth | Likely network/Wi-Fi on the tested machine (not confirmed) | Test another connection; some Realtek Wi-Fi setups benefit from disabling ASPM on that device |
+| Boot fails after adding `pci-aspm-default` | On the tested machine it was set on the GPU (`PciRoot(0x0)/Pci(0x2,0x0)`) and boot failed; removing it fixed boot | Remove it from the GPU. If you use it at all, set it only on the Wi-Fi device |
+| Log shows `Sandbox ... deny ... AppleIntelTGL...` for WebKit.GPU, Chrome or MTLCompilerService | Harmless logging: the plugin overrides it. The drivers are mapped into Safari's and Chrome's GPU processes (checked with `lsof`) | None |
+| YouTube fails in Safari at 0:00 after a Safari update, other videos play | Reported by the tester; cause not found | Use another browser for YouTube; avoid Safari updates |
 
 ---
 
@@ -241,6 +278,10 @@ Notes: the name "Intel(R) TGL Unknown" and 1536 MB VRAM are values reported by A
 | Sleep / wake | **Not tested** |
 | External displays, hot-plug | **Not tested** |
 | Other 12th/13th-gen mobile chips, other macOS versions | **Not tested** |
+| High-bitrate streaming (YouTube/Drive/Netflix 1080p) | Jitters or stalls on seek on the tested machine. Local files (also 4K60), 720p, short reels and small previews are smooth. Not a sandbox problem; cause not found (network, software decode of VP9/AV1, or display timing are all possible) |
+| YouTube in Safari after a Safari update | Fails at 0:00 on the tested machine; other videos play; cause not found |
+| Slow shutdown | macOS "shutdown stall" reports seen on the tested machine; not analysed yet |
+
 
 Upstream marks Alder Lake-P/U internal-panel support as experimental and untested on hardware. Treat this release the same way.
 
@@ -270,14 +311,17 @@ Requires macOS with Xcode Command Line Tools and Python 3.
 
 ```bash
 git clone https://github.com/b00t0x/WhateverXe.git && cd WhateverXe
-git checkout 68a2427
+git checkout 0.8.0                       # or 0.6.1 for the older release
 # Place Lilu.kext and MacKernelSDK in the repository root (see upstream's README)
-python3 apply_functional_patches.py     # applies only the two fixes and the test
-python3 tools/test.py                   # CPU tests
-python3 tools/build.py --release        # output: build/WhateverXe.kext
+curl -O https://example.com/REPLACE-raw-link-to/scripts/apply_functional_patches.py
+python3 apply_functional_patches.py      # add --no-diagnostic to leave out the optional diagnostic
+python3 tools/test.py                    # CPU tests
+python3 tools/build.py --release         # output: build/WhateverXe.kext
 ```
 
-Verify your own build before using it: boot it and run the checks in [Verify it works](#verify-it-works).
+The latest script supports upstream 0.6.1 and 0.8.0 besides different scripts for different versions are provided. If upstream changes the code again it prints
+`FAILED (no anchor variant matched exactly once)` and changes nothing in that file; please open an issue.
+Ready-made diffs and patches are in [`patches/`](https://github.com/belugaa-01/WhateverXe-Patched/tree/main/patches).
 
 ---
 
@@ -285,6 +329,8 @@ Verify your own build before using it: boot it and run the checks in [Verify it 
 
 Please include:
 
+- Before reporting, run `bash scripts/check_wex_setup.sh` and, if asked, `bash scripts/collect_wex_report.sh`. Use the
+[test report form](https://github.com/belugaa-01/WhateverXe-Patched/issues/new) when opening an issue.
 - CPU model, GPU device ID and revision, laptop model, firmware DVMT value
 - macOS build, OpenCore version, Lilu version, Graphics package version
 - The output of  
