@@ -215,6 +215,10 @@ Run the read-only checker first. It prints OK / WARN / FAIL lines with hints and
 bash scripts/check_wex_setup.sh
 ```
 
+- A working setup should look this - 
+  <img width="948" height="637" alt="image_2026-11-10_10-13-07" src="https://github.com/user-attachments/assets/198295e9-d893-4fad-9789-c2c16feb6a9a" />
+
+
 If the native start is blocked, the plugin (v0.2.0+) records the reason in `N97NativeBlockReason` on the GPU:
 `ioreg -l -w0 -n IGPU | grep N97NativeBlockReason`. The checker decodes it. Mask bits:
 
