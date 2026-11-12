@@ -89,7 +89,7 @@ Neither upstream nor this fork has tested sleep/wake, external displays, or othe
 | OpenCore | 1.0.9 |
 | Lilu | 1.7.3 |
 | AMFIPass | v1.4.1 **Mod** |
-| WhateverXe Graphics package | 0.4.2 |
+| WhateverXe Graphics package | 0.4.1 |
 | AppleIntelTGLCompat | 0.8.0 (unchanged from upstream) |
 | SMBIOS used | `MacBookPro16,2` |
 
@@ -105,7 +105,7 @@ All items are required unless marked optional. **This repository does not contai
 |---|---|---|---|
 | **WhateverXe.kext (this fork)** | 0.8.0 + patches | The Lilu plugin with the two fixes | [This fork's release](https://github.com/belugaa-01/WhateverXe-Patched/releases) |
 | **AMFIPass (Mod)** | v1.4.1 Mod | Lets macOS load the signed graphics bundles installed on the Data volume (upstream's Mod build, not the stock one) | [AMFIPass v1.4.1 Mod](https://github.com/b00t0x/WhateverXe-Graphics/raw/refs/heads/main/extras/AMFIPass-v1.4.1-Mod-RELEASE.zip) |
-| **WhateverXe Graphics package** | 0.4.2 | Installs Apple's Tiger Lake driver payloads and shader fixes on macOS (upstream's installer) | [WhateverXe Graphics package](https://github.com/b00t0x/WhateverXe-Graphics/releases/) |
+| **WhateverXe Graphics package** | 0.4.1 | Installs Apple's Tiger Lake driver payloads and shader fixes on macOS (upstream's installer) | [WhateverXe Graphics package](https://github.com/b00t0x/WhateverXe-Graphics/releases/) |
 | **Lilu** | 1.7.3 | Required by WhateverXe | [Lilu](https://github.com/dortania/build-repo/releases/tag/Lilu-0249c3a) |
 | **OpenCore** | 1.0.9 | Bootloader | [OpenCorePkg](https://github.com/dortania/build-repo/releases/tag/OpenCorePkg-dd5dc22) |
 | **SSDTTime** | latest | Generates `SSDT-PNLF` for brightness | [SSDTTime](https://github.com/corpnewt/ssdttime) |
@@ -122,7 +122,7 @@ All items are required unless marked optional. **This repository does not contai
 
 | Release | Upstream WhateverXe | WhateverXe Graphics package | Status |
 |---|---|---|---|
-| [v0.2.0-experimental](https://example.com/REPLACE-v020-release) | **0.8.0** | **0.4.2** | Tested on one machine |
+| [v0.2.0-experimental](https://example.com/REPLACE-v020-release) | **0.8.0** | **0.4.1** | Tested on one machine |
 | [v0.1.0-experimental](https://github.com/belugaa-01/WhateverXe-Patched/releases/tag/v0.1.0-Initial) | 0.6.1 | 0.3.2 | Tested on one machine |
 
 Use the Graphics package version listed for the release you install. Each upstream version has its own patch in `patches/<upstream version>/`.
