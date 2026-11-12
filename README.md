@@ -313,7 +313,7 @@ Requires macOS with Xcode Command Line Tools and Python 3.
 git clone https://github.com/b00t0x/WhateverXe.git && cd WhateverXe
 git checkout 0.8.0                       # or 0.6.1 for the older release
 # Place Lilu.kext and MacKernelSDK in the repository root (see upstream's README)
-curl -O https://example.com/REPLACE-raw-link-to/scripts/apply_functional_patches.py
+curl -O https://github.com/belugaa-01/WhateverXe-Patched/blob/main/patches/0.2.0/apply_functional_patches.py
 python3 apply_functional_patches.py      # add --no-diagnostic to leave out the optional diagnostic
 python3 tools/test.py                    # CPU tests
 python3 tools/build.py --release         # output: build/WhateverXe.kext
