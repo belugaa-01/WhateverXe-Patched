@@ -13,7 +13,7 @@
 > This is a precaution based on one tester's observation, not a fully diagnosed cause.
 
 This is an unofficial community patch set on top of
-[b00t0x/WhateverXe](https://github.com/b00t0x/WhateverXe) 0.6.1 (commit `68a2427`).
+[b00t0x/WhateverXe](https://github.com/b00t0x/WhateverXe) (commit `68a2427`).
 It is **not affiliated with or endorsed by the upstream author**. All driver work is upstream's;
 this repository only adjusts two checks so a laptop with a 6-bit internal eDP panel can start the native
 graphics driver on 12th/13th-gen Xe-LP (Display 13) laptop iGPUs. It has been verified on one Alder Lake-U machine only. Discussion: [Reddit thread](https://www.reddit.com/r/hackintosh/s/AMW8XHMaXC).
@@ -50,20 +50,20 @@ graphics driver on 12th/13th-gen Xe-LP (Display 13) laptop iGPUs. It has been ve
 
 ## What this fork changes
 
-### What upstream 0.6.1 does not do on this hardware
+### What upstream 0.8.0 does not do on this hardware
 
 On the tested machine the upstream plugin recognises the GPU (`0x46B3` is in its device table and is admitted),
 but then **refuses to start the native driver**, so macOS stays on the firmware framebuffer:
 7 MB VRAM, "No Kext Loaded", no Metal.
 
-| # | What upstream 0.6.1 does | Why it blocks this machine | Observed symptom |
+| # | What upstream 0.8.0 does | Why it blocks this machine | Observed symptom |
 |---|---|---|---|
 | 1 | Requires the firmware's boot display to use **8 bits per colour** (`TRANS_DDI_FUNC_CTL` bits 22:20 = 0) in `dpSource`, `linearPlan` and the framebuffer-memory `inspect` check | The tested panel runs at **6 bpc** (field value 2), so the boot handoff is rejected | `N97NativePreflight = No`, `N97NativeStartAllowed = No`, `WEXDisplay13BootReady = No` |
 | 2 | `display13SSTPort()` requires the port object field at `+0x550` to equal `1` on Combo DDIs | The tested **eDP port object reports `0`** there, so the port is rejected and the DP adoption branch is skipped | Boot handoff ends `NotReady`, framebuffer start not accepted, accelerator never registers |
 
 ### What this fork adds
 
-| Area | Upstream 0.6.1 | This fork |
+| Area | Upstream 0.8.0 | This fork |
 |---|---|---|
 | 6-bpc firmware eDP scanout | Rejected | **Accepted for eDP panels only** (8 bpc behaves as before; external DP and other depths are still rejected) |
 | eDP port with `+0x550 == 0` on Combo DDI A/B | Rejected | **Accepted for panel ports only** (all other ports unchanged) |
@@ -89,8 +89,8 @@ Neither upstream nor this fork has tested sleep/wake, external displays, or othe
 | OpenCore | 1.0.9 |
 | Lilu | 1.7.3 |
 | AMFIPass | v1.4.1 **Mod** |
-| WhateverXe Graphics package | 0.3.2 |
-| AppleIntelTGLCompat | 0.6.1 (unchanged from upstream) |
+| WhateverXe Graphics package | 0.4.2 |
+| AppleIntelTGLCompat | 0.8.0 (unchanged from upstream) |
 | SMBIOS used | `MacBookPro16,2` |
 
 Other kexts on the tested machine (Wi-Fi, touchpad, audio, keyboard) are unrelated to graphics and are not listed here.
@@ -110,7 +110,7 @@ All items are required unless marked optional. **This repository does not contai
 | **OpenCore** | 1.0.9 | Bootloader | [OpenCorePkg](https://github.com/dortania/build-repo/releases/tag/OpenCorePkg-dd5dc22) |
 | **SSDTTime** | latest | Generates `SSDT-PNLF` for brightness | [SSDTTime](https://github.com/corpnewt/ssdttime) |
 | `SSDT-PNLF` example (optional) | — | A sample for reference only; generate your own for your DSDT | [Sample SSDT-PNLF](https://github.com/belugaa-01/WhateverXe-Patched/blob/main/SSDT-PNLF.aml) |
-| AppleIntelTGLCompat (optional) | 0.6.1 | Upstream's compatibility provider, unchanged. Use the copy that matches upstream 0.6.1 | [Upstream release](https://github.com/b00t0x/WhateverXe/tree/main/AppleIntelTGLCompat) |
+| AppleIntelTGLCompat (optional) | 0.8.0 | Upstream's compatibility provider, unchanged. Use the copy that matches upstream 0.8.0 | [Upstream release](https://github.com/b00t0x/WhateverXe/tree/main/AppleIntelTGLCompat) |
 | BrightnessKeys (optional) | latest | Fn-key brightness hotkeys | [BrightnessKeys](https://github.com/acidanthera/BrightnessKeys/releases) |
 | Hackintool (optional) | latest | Checking GPU / PCIe info | [Hackintool](https://github.com/benbaker76/Hackintool/releases) |
 
@@ -234,7 +234,7 @@ If the native start is blocked, the plugin (v0.2.0+) records the reason in `N97N
 
 | Check | Command | Expected |
 |---|---|---|
-| Kexts loaded | `kmutil showloaded \| grep -iE "WhateverXe\|TGL\|Lilu"` | Lilu, `WhateverXe` 0.6.1, `AppleIntelTGLCompat`, `AppleIntelTGLGraphicsFramebuffer`, and the accelerator kext |
+| Kexts loaded | `kmutil showloaded \| grep -iE "WhateverXe\|TGL\|Lilu"` | Lilu, `WhateverXe` 0.8.0, `AppleIntelTGLCompat`, `AppleIntelTGLGraphicsFramebuffer`, and the accelerator kext |
 | Plugin gate | `ioreg -l -w0 -n IGPU \| grep -E "N97Native\|WEXDisplay13BootReady"` | `N97NativePreflight = Yes`, `N97NativeStartAllowed = Yes`, `WEXDisplay13BootReady = Yes` |
 | Metal | `system_profiler SPDisplaysDataType` | `Metal Support: Metal 2`, `Connection Type: Internal` |
 | Brightness device | `ioreg -n PNLF -r -l` | `_UID = "19"` and an `AppleIntelPanelA` child with `WhateverXeBacklightProfile` |
