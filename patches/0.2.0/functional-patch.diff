@@ -1,0 +1,101 @@
+diff --git a/WhateverXe/kern_alderlake_n.hpp b/WhateverXe/kern_alderlake_n.hpp
+index 11c6803..aff0e0d 100644
+--- a/WhateverXe/kern_alderlake_n.hpp
++++ b/WhateverXe/kern_alderlake_n.hpp
+@@ -239,7 +239,13 @@ inline bool dpSource(const DisplayReadout &boot,unsigned pipe,unsigned ddi,const
+     // payload-allocation bit. Firmware may leave bit8 set on an SST GOP;
+     // preserve it and include it in the unchanged-source check, never clear it
+     // on an enabled transcoder or infer an MST transport from that bit alone.
+-    return (trans&0xFF700000U)==(0x82000000U|((ddi+1)<<27)) &&
++    // Transcoder colour depth (bits 22:20): 0 = 8 bpc, 2 = 6 bpc. Internal eDP
++    // panels commonly run 6 bpc with dithering from the 8-bpc linear plane.
++    // Accept 6 bpc only for the panel path; external DP keeps the 8-bpc rule.
++    // The value is captured in the readout and re-checked by dpSourceUnchanged.
++    const unsigned bpc=(trans>>20)&7;
++    return (trans&0xFF000000U)==(0x82000000U|((ddi+1)<<27)) &&
++        (bpc==0 || (panel && bpc==2)) &&
+         !(trans&((1U<<15)|(1U<<9))) && !ctl2 &&
+         (lanes==1 || lanes==2 || lanes==4) && ((buf>>1)&7)==lanes-1 &&
+         (buf&(typeC && tc->ownershipOptional?0x80000080U:0x800000C0U))==
+@@ -394,7 +400,8 @@ inline LinearStatus linearPlan(const DisplayReadout &r, LinearPlan &p,unsigned d
+     if(protocol!=GOPProtocol::TMDS && !dpSource(r,p.pipe,ddi,tc,protocol==GOPProtocol::EDP))return LinearStatus::InvalidDPSource;
+     p.geometry=XELPGeometry::linear(p.control,p.stride,p.size,p.position,p.offset);
+     if(!p.geometry.valid || (p.surface&4095) || p.surface!=surfLive ||
+-       ((trans>>20)&7)!=0 || (pipeConf&0xC0000000)!=0xC0000000 ||
++       (((trans>>20)&7)!=0 && !(protocol==GOPProtocol::EDP && ((trans>>20)&7)==2)) ||
++       (pipeConf&0xC0000000)!=0xC0000000 ||
+        !bootGeometry(r,p.pipe,p.geometry,htotal,vtotal))return LinearStatus::NotLinearFHD;
+     // DPT disable is global on Display 13. Exclude all other active planes
+     // and cursors, including planes on powered but inactive pipes.
+diff --git a/WhateverXe/kern_display13_fb_memory.hpp b/WhateverXe/kern_display13_fb_memory.hpp
+index ee5af80..1c2e504 100644
+--- a/WhateverXe/kern_display13_fb_memory.hpp
++++ b/WhateverXe/kern_display13_fb_memory.hpp
+@@ -424,7 +424,8 @@ template<class IO> Readout inspect(IO &io,const void *controller,size_t controll
+         const bool source=dsi ? !(io.read(0x60400)&(1U<<31)) && (XELPGeometry::timing(geometry,dsi->htotal,dsi->vtotal) ||
+             (clippedCanvas() && geometry.width<=(dsi->htotal&0x3fff)+1 && geometry.height<=(dsi->vtotal&0x3fff)+1)) :
+             (dpt&(1U<<30)) && ((trans>>27)&15)==expectedDDI+1 &&
+-            (dp ? ((trans>>24)&7)==2 : ((trans>>24)&7)<=1) && !((trans>>20)&7);
++            (dp ? ((trans>>24)&7)==2 : ((trans>>24)&7)<=1) &&
++            (!((trans>>20)&7) || (dp && panel && ((trans>>20)&7)==2));
+         if (dpt==UINT32_MAX || !source || !(trans&(1U<<31)) || (conf&0xC0000000)!=0xC0000000 ||
+             !geometry.valid ||
+             position || offset || (r.surface&4095) ||
+diff --git a/WhateverXe/kern_xe.cpp b/WhateverXe/kern_xe.cpp
+index b18630b..2225d19 100644
+--- a/WhateverXe/kern_xe.cpp
++++ b/WhateverXe/kern_xe.cpp
+@@ -4277,6 +4277,19 @@ void XE::adlnBootstrap(IOPCIDevice *pci) {
+         pci->setProperty("WEXDisplay13BootReady",display13BootReady);
+         pci->setProperty("N97NativePreflight",adlnNativeReady);
+         pci->setProperty("N97NativeReservedGGTT",prefix);
++        { // Diagnostic only: record why the native start is (not) allowed. CPU-only; no extra hardware access.
++            uint64_t why[8] {1};
++            why[1]=(!aperture ? 1ULL<<0 : 0) | ((aperture && aperture->getLength()!=0x10000000) ? 1ULL<<1 : 0) |
++                (page_size!=4096 ? 1ULL<<2 : 0) | (!physicalOptions ? 1ULL<<3 : 0) |
++                ((pci->configRead16(4)&6)!=6 ? 1ULL<<4 : 0) | (!checkKernelArgument("-allow3d") ? 1ULL<<5 : 0) |
++                (!checkKernelArgument("-disablegfxfirmware") ? 1ULL<<6 : 0) |
++                (checkKernelArgument("-wex-adln-scanout") ? 1ULL<<7 : 0) | (checkKernelArgument("-wex-adln-gpu") ? 1ULL<<8 : 0) |
++                (!prefix ? 1ULL<<16 : 0) | (!renderReady ? 1ULL<<17 : 0);
++            why[2]=sourceProof[3];why[3]=sourceProof[2];why[4]=bootDDI;
++            why[5]=aperture ? aperture->getLength() : 0;why[6]=mapperOptions;why[7]=systemMapper;
++            pci->setProperty("N97NativeBlockReason",why,sizeof(why));
++            if(why[1])SYSLOG("igfx","Native start blocked: reason mask=%llx linearPlan=%llu protocol=%llu ddi=%llu",why[1],why[2],why[3],why[4]);
++        }
+     }
+ 	if (gtTest && checkKernelArgument("-wex-adln-gpu")) {
+ 		AlderLakeN::GPUResult gpu;
+@@ -7629,7 +7642,7 @@ uint8_t *XE::display13SSTPort(void *port) {
+  auto p=static_cast<uint8_t *>(port);auto config=Display13FBMemory::field<uint32_t *>(p,0x548);
+  if(!Display13FBTopology::selected(s->adlnPlatform,config,s->adlnOutputWiring) ||
+     !(s->adlnOutputWiring.links()&(1U<<config[0])) || p[0x117] ||
+-    Display13FBMemory::field<uint32_t>(p,0x120)!=config[0] || Display13FBMemory::field<uint32_t>(p,0x550)!=(config[0]>=3?((s->adlnOutputWiring.typeC&(1U<<config[0]))?3U:4U):1U) ||
++    Display13FBMemory::field<uint32_t>(p,0x120)!=config[0] || (Display13FBMemory::field<uint32_t>(p,0x550)!=(config[0]>=3?((s->adlnOutputWiring.typeC&(1U<<config[0]))?3U:4U):1U) && /* eDP port field 0x550 */!(config[0]<2 && (s->adlnOutputWiring.panel&(1U<<config[0])) && !Display13FBMemory::field<uint32_t>(p,0x550))) ||
+     Display13FBMemory::field<void *>(p,0x578)!=c.access)return nullptr;
+  return p;
+ }
+diff --git a/tests/display13_linear_dp.cpp b/tests/display13_linear_dp.cpp
+index 14a2afc..4054245 100644
+--- a/tests/display13_linear_dp.cpp
++++ b/tests/display13_linear_dp.cpp
+@@ -76,6 +76,20 @@ int main() {
+         assert(r.status==LinearStatus::Success && dpSourceUnchanged(io,boot,pipe,ddi,0,nullptr,true));
+         io.regs[0x60540+0x1000*pipe]^=64;assert(!dpSourceUnchanged(io,boot,pipe,ddi,0,nullptr,true));
+     }
++    // eDP panels often run 6 bpc (TRANS_DDI_FUNC_CTL bits 22:20 = 2) with dithering from the
++    // 8-bpc plane. Accept it only as a panel source; every other depth, and external DP, stays rejected.
++    for(unsigned ddi=0;ddi<2;++ddi)for(unsigned pipe=0;pipe<3;++pipe)for(unsigned bpc=1;bpc<8;++bpc) {
++        auto io=firmware(pipe,ddi,2,true);io.regs[0x60400+0x1000*pipe]|=bpc<<20;
++        auto boot=readDisplay(io,true);LinearPlan plan;const bool sixBit=bpc==2;
++        assert(dpSource(boot,pipe,ddi,nullptr,true)==sixBit);
++        assert(!dpSource(boot,pipe,ddi));
++        assert(linearPlan(boot,plan,ddi,GOPProtocol::EDP)==(sixBit?LinearStatus::Ready:LinearStatus::InvalidDPSource));
++        assert(linearPlan(boot,plan,ddi,GOPProtocol::DP)==LinearStatus::InvalidDPSource);
++        if(sixBit) {
++            auto r=reinitializeLinear(io,boot,true,ddi,GOPProtocol::EDP);
++            assert(r.status==LinearStatus::Success && dpSourceUnchanged(io,boot,pipe,ddi,0,nullptr,true));
++        }
++    }
+     auto bad=firmware(0,0,4,true);bad.regs[0x60540]=0x80000000;
+     auto r=reinitializeLinear(bad,readDisplay(bad,true),true,0,GOPProtocol::DP);
+     assert(r.status==LinearStatus::InvalidDPSource && bad.writes.empty());
