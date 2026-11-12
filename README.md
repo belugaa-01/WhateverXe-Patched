@@ -232,6 +232,7 @@ If the native start is blocked, the plugin (v0.2.0+) records the reason in `N97N
 | 17 | GPU topology / eDRAM check failed | Share your report |
 
 
+
 | Check | Command | Expected |
 |---|---|---|
 | Kexts loaded | `kmutil showloaded \| grep -iE "WhateverXe\|TGL\|Lilu"` | Lilu, `WhateverXe` 0.8.0, `AppleIntelTGLCompat`, `AppleIntelTGLGraphicsFramebuffer`, and the accelerator kext |
