@@ -215,7 +215,7 @@ Run the read-only checker first. It prints OK / WARN / FAIL lines with hints and
 bash scripts/check_wex_setup.sh
 ```
 
-- A working setup should look this - 
+- A working setup should look like this - 
 
   <img width="948" height="572" alt="image_2026-11-10_10-13-07" src="https://github.com/user-attachments/assets/a6fae741-7458-4b99-b43c-a886f42b0567" />
 
