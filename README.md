@@ -300,8 +300,9 @@ The two fixes only touch the **Display 13 internal-panel (eDP)** handling of ups
 
 | Tier | GPU family | Device IDs (from upstream's table) | Status with this patch set |
 |---|---|---|---|
-| **Tested** | Alder Lake-U (Core i3-1215U) | `46B3` | **Tested by the maintainer on one machine** |
-| **Community-reported** | Alder Lake-P/U (Core i5-1235U) | `46A8` | **Reported working by one user** |
+| **Tested** | Alder Lake-U (Core i3-1215U) | `46B3` | Tested by the maintainer on one machine |
+| **Community-reported** | Alder Lake-U/P/H | `46A8` | Reported working by one user |
+| | Raptor Lake-H/P/U | `A7A8` | Reported working by one user |
 | Shares the patched code, untested | Alder Lake-H/P/U (other IDs) | `46A3`, `46A6`, `46AA`, `46C3` | Untested |
 | Shares the patched code, untested | Raptor Lake-H/P/U | `A7A0`, `A7A1`, `A7A8`–`A7AD` | Untested |
 | Shares the patched code, untested | Alder Lake-N / Twin Lake | `46D0`–`46D4` | Untested. The changes only apply to internal panels (eDP), so devices without one should behave as upstream |
